@@ -23,7 +23,10 @@ categories:{
   courseDuration:{
     type:String
   },
-
+  userWhoHasBought: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+}],
   coverPage:{
     type:[String]
   },

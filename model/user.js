@@ -8,6 +8,11 @@ const UserSchema = new schema({
     type: String,
     required: true
 },
+
+enrolledCourses:[{
+  type:Schema.Types.ObjectId,
+  ref:'Course'
+}],
 email: {
     type: String,
     required: true,
@@ -33,7 +38,6 @@ cart: [{
     type: Schema.Types.ObjectId,
     ref: 'course'
 }],
-
 
   role: {
     type: String,

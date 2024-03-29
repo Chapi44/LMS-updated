@@ -39,6 +39,8 @@ router.post('/', upload.fields([
 // Route to get all courses
 router.get('/', courseController.getAllCourses);
 
+router.post('/:courseId/enroll', authenticateUser,courseController.enrollCourse);
+
 // Route to get a course by ID
 router.get('/:id', courseController.getCourseById);
 

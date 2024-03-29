@@ -5,6 +5,7 @@ const express = require("express");
 const http = require("http");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -24,6 +25,7 @@ const errorHandlerMiddleware = require("./middleware/error-handler.js");
 
 
 app.use(cors({origin: 'http://localhost:5173'}));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(morgan("tiny"));
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));

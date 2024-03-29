@@ -1,4 +1,5 @@
 const Course = require('../model/course');
+const User = require('../model/user');
 const { StatusCodes } = require('http-status-codes');
 const baseURL = process.env.BASE_URL;
 const path = require('path');
@@ -84,10 +85,49 @@ async function getCourseById(req, res) {
 }
 
 
+
+const enrollCourse = async (req, res) => {
+    try {
+        const courseId = req.params.courseId;
+        const userId = req.user.userId; 
+        console.log(userId);// Assuming you have authentication middleware to get the user ID
+
+        // Check if the course exists
+        const course = await Course.findById(courseId);
+        if (!course) {
+            return res.status(StatusCodes.NOT_FOUND).json({ error: 'Course not found' });
+        }
+
+        // Check if the user is already enrolled in the course
+        if (course.userWhoHasBought.includes(userId)) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ error: 'User already enrolled in the course' });
+        }
+
+        // Add the user to the list of users who have bought the course
+        course.userWhoHasBought.push(userId);
+        await course.save();
+
+        // Add the course to the user's enrolled courses
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(StatusCodes.NOT_FOUND).json({ error: 'User not found' });
+        }
+        user.enrolledCourses.push(courseId);
+        await user.save();
+
+        res.status(StatusCodes.OK).json({ message: 'User enrolled in the course successfully' });
+    } catch (error) {
+        console.error('Error enrolling user in course:', error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Internal server error' });
+    }
+};
+
+
 module.exports = {
     createCourse,
     getAllCourses,
-    getCourseById
+    getCourseById,
+    enrollCourse
 };
 
 

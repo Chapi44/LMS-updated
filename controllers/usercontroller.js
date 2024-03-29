@@ -42,7 +42,7 @@ const deleteuser = async (req, res) => {
 
 
 const updateUser = async (req, res) => {
-  const { fullname, position, email, role, api_permission } = req.body;
+  const { fullname, position, email, role,  } = req.body;
   console.log(req.boday);
   console.log("Request Body:", req.body);
   console.log("Email:", email);
@@ -52,7 +52,7 @@ const updateUser = async (req, res) => {
   const user = await User.findOne({ _id: req.user.userId });
 
   // Check if at least one property is provided in the request body
-  if (!(email || fullname || role || api_permission || position)) {
+  if (!(email || fullname || role || position)) {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({ error: "Please provide at least one value to update" });
@@ -62,7 +62,6 @@ const updateUser = async (req, res) => {
   if (email) user.email = email;
   if (fullname) user.fullname = fullname;
   if (role) user.role = role;
-  if (api_permission) user.api_permission = api_permission;
   if (position) user.position = position;
 
   // Save the updated user
