@@ -16,14 +16,14 @@ const userRouter = require("./routes/userroutes.js");
 const courseRoutes = require("./routes/courseRoutes.js")
 const InstructorRoutes = require('./routes/InstructorRouter.js')
 
-const corsOptions = require("./config/corsOptions.js")
+// const corsOptions = require("./config/corsOptions.js")
 
 // Middleware
 const notFoundMiddleware = require("./middleware/not-found.js");
 const errorHandlerMiddleware = require("./middleware/error-handler.js");
 
 
-app.use(cors());
+app.use(cors({origin: 'http://localhost:5173'}));
 app.use(morgan("tiny"));
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));

@@ -1,9 +1,9 @@
 const express=require('express')
-const userController =require('../controller/usercontroller')
+const userController =require('../controllers/usercontroller')
 const {
   authenticateUser,
   authorizePermissions,
-} = require("../middelware/authentication");
+} = require("../middleware/authentication");
 
 const router=express.Router()
 router.get('/getallusers',

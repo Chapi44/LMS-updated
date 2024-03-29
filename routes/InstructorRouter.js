@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const instructorController = require('../controller/InstructorController');
+const instructorController = require('../controllers/InstructorController');
 const path = require('path');
 
 // Multer configuration for handling image uploads
