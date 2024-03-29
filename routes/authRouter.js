@@ -4,7 +4,7 @@ const authcontroller = require("../controller/authController");
 const {
   authenticateUser,
   authorizePermissions,
-} = require("../middelware/authentication");
+} = require("../middleware/authentication");
 
 router.post(
   "/register",

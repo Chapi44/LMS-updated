@@ -19,8 +19,8 @@ const courseRoutes = require("./routes/courseRoutes.js")
 // const corsOptions = require("./config/corsOptions.js")
 
 // Middleware
-const notFoundMiddleware = require("./middelware/not-found.js");
-const errorHandlerMiddleware = require("./middelware/error-handler.js");
+const notFoundMiddleware = require("./middleware/not-found.js");
+const errorHandlerMiddleware = require("./middleware/error-handler.js");
 
 
 app.use(cors());

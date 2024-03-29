@@ -1,51 +1,62 @@
-// courseController.js
-
-
 const Course = require('../model/course');
+const { StatusCodes } = require('http-status-codes');
 const baseURL = process.env.BASE_URL;
-const path = require('path')
+const path = require('path');
 
+const createCourse = async (req, res) => {
+    const userId=req.user.userId;
 
-async function createCourse(req, res) {
-    // const userId = req.user.userId;
     try {
-        const { courseName, paymentType, chapter, price,
+        const { 
+            courseName, 
+            paymentType, 
+            chapter, 
+            price, 
             courseDescription, 
-            aboutCourse,
-            catagories, 
-            courseDuration,
-            // coverPage
-         } = req.body;
-        const files = req.files;
-        
-        // Process uploaded files and generate Lesson objects
-        const lessonFiles = files.map(file => ({
+            aboutCourse, 
+            categories, 
+            courseDuration 
+        } = req.body;
+
+        // Check if files are included in the request for cover pages
+        if (!req.files || !req.files['coverPage'] || !Array.isArray(req.files['coverPage'])) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ error: 'No cover page files uploaded or invalid file format' });
+        }
+
+        const lessonFiles = req.files['files'].map(file => ({
             LessonType: file.mimetype,
-            LessonUrl: baseURL + "/uploads/" + path.basename(file.path) // Construct lesson URLs with base URL
+            LessonUrl: baseURL + "/uploads/course/" + file.filename
         }));
 
-        const course = new Course({
+        // Map uploaded cover page image files to their URLs with base URL
+        const coverPageImages = req.files['coverPage'].map(file => baseURL + "/uploads/course/coverpage/" + file.filename);
+
+        const newCourse = await Course.create({
             courseName,
             paymentType,
             price,
-            courseDescription, 
+            courseDescription,
             aboutCourse,
-            catagories, 
+            categories,
             courseDuration,
-            
             chapter: chapter.map(chapter => ({
                 LessonName: chapter.LessonName,
                 LessonFile: lessonFiles
-            }))
+            })),
+            coverPage: coverPageImages,
+            createUser: userId
+
         });
 
-        const savedCourse = await course.save();
-        res.status(201).json(savedCourse);
-    } catch (err) {
-        console.log(err);
-        res.status(400).json({ message: err.message });
+        res.status(StatusCodes.CREATED).json({ message: 'Course created successfully', course: newCourse });
+    } catch (error) {
+        console.error('Error creating course:', error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Internal server error' });
     }
-}
+};
+
+module.exports = { createCourse };
+
 
 
 async function getAllCourses(req, res) {
