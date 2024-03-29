@@ -36,6 +36,10 @@ router.post('/', upload.fields([
     { name: 'coverPage', maxCount: 6 } // Handle coverPage files
 ]), authenticateUser, courseController.createCourse);
 
-// Other routes here...
+// Route to get all courses
+router.get('/', courseController.getAllCourses);
+
+// Route to get a course by ID
+router.get('/:id', courseController.getCourseById);
 
 module.exports = router;

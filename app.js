@@ -11,12 +11,12 @@ dotenv.config();
 const app = express();
 
 const connectDB = require("./db/connect.js");
-// const authRouter = require("./routes/authRouter");
-// const userRouter = require("./routes/userroutes.js");
+const authRouter = require("./routes/authRouter");
+const userRouter = require("./routes/userroutes.js");
 const courseRoutes = require("./routes/courseRoutes.js")
-// const InstructorRoutes = require('./routes/InstructorRouter.js')
+const InstructorRoutes = require('./routes/InstructorRouter.js')
 
-// const corsOptions = require("./config/corsOptions.js")
+const corsOptions = require("./config/corsOptions.js")
 
 // Middleware
 const notFoundMiddleware = require("./middleware/not-found.js");
@@ -27,10 +27,10 @@ app.use(cors());
 app.use(morgan("tiny"));
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
-// app.use("/api/v1/auth", authRouter);
-// app.use("/api/v1/users", userRouter);
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/users", userRouter);
 app.use('/api/v1/course',courseRoutes)
-// app.use('/api/v1/Instruct',InstructorRoutes);
+app.use('/api/v1/Instruct',InstructorRoutes);
 
 
 

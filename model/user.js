@@ -33,14 +33,8 @@ cart: [{
     type: Schema.Types.ObjectId,
     ref: 'course'
 }],
-totalIncome: {
-    type: Number,
-    default: 0
-},
-totalExpenditure: {
-    type: Number,
-    default: 0
-},
+
+
   role: {
     type: String,
     enum: ['admin', 'user', 'instructor'],
