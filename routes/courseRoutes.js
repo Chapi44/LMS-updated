@@ -44,4 +44,6 @@ router.post('/:courseId/enroll', authenticateUser,courseController.enrollCourse)
 // Route to get a course by ID
 router.get('/:id', courseController.getCourseById);
 
+router.get('/user-courses',authenticateUser, courseController.getUserCourses);
+
 module.exports = router;

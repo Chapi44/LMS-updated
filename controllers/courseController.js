@@ -123,11 +123,37 @@ const enrollCourse = async (req, res) => {
 };
 
 
+const getUserCourses = async (req, res) => {
+    try {
+        const userId = req.user.userId;
+        
+        // Assuming you have authentication middleware to get the user ID
+
+        console.log(userId);
+
+        // Find the user by ID and populate the enrolledCourses field to get the course details
+        const user = await User.findById(userId).populate('enrolledCourses');
+        if (!user) {
+            return res.status(StatusCodes.NOT_FOUND).json({ error: 'User not found' });
+        }
+
+        // Extract the enrolled courses from the user object
+        const enrolledCourses = user.enrolledCourses;
+
+        res.status(StatusCodes.OK).json({ enrolledCourses });
+    } catch (error) {
+        console.error('Error getting user courses:', error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Internal server error' });
+    }
+};
+
+
 module.exports = {
     createCourse,
     getAllCourses,
     getCourseById,
-    enrollCourse
+    enrollCourse,
+    getUserCourses 
 };
 
 
